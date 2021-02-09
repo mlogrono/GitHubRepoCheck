@@ -4,17 +4,12 @@ plugins {
     id 'java'
     id 'war'
     id "com.github.node-gradle.node" version "3.0.0"
-//    id "com.moowork.node" version "1.2.0"
 }
 node {
     version = '14.15.4'
     npmVersion = '7.5.2'
     download = true
 }
-//jar.dependsOn 'npm_run_build'
-//jar {
-//    from '' into 'static'
-//}
 
 group = 'com.github.analyzer'
 version = '0.0.1-SNAPSHOT'

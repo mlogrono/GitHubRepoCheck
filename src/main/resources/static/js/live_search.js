@@ -1,26 +1,3 @@
-// var request = new XMLHttpRequest();
-//
-// function searchInfo() {
-//     var name = document.vinform.name.value;
-//     var url = "index.jsp?val=" + name;
-//
-//     try {
-//         request.onreadystatechange = function () {
-//             if (request.readyState == 4) {
-//                 var val = request.responseText;
-//                 document.getElementById('mylocation').innerHTML = val;
-//             }
-//         }//end of function
-//         request.open("GET", url, true);
-//         request.send();
-//     } catch (e) {
-//         alert("Unable to connect to server");
-//     }
-// }
-
-
-
-
 $(document).ready(function () {
 
     var wait;
@@ -135,27 +112,8 @@ $(document).ready(function () {
         }
         else {
             console.log("Key '"+String.fromCharCode(event.which)+"'("+event.which+")");
-            //
-            // if (!$("#loader").length) {
-            //     var feedbackOutput = "<div id=\"loader\" class=\"loader\"/>";
-            //     $("#feedback").html(feedbackOutput);
-            // }
         }
-        // event.preventDefault();
     });
-
-
-    // $("#query-box").keypress(function (event){
-    //     if (event.which === 13) {
-    //         // console.log("Enter key detected.")
-    //         event.preventDefault();
-    //     }
-    //     if ($("#loader").length) {
-    //         console.log("-->");
-    //         var feedbackOutput = "<div class=\"loader\"/>";
-    //         $("#feedback").html(feedbackOutput);
-    //     }
-    // });
 });
 
 
@@ -193,8 +151,6 @@ function showResults (repo, owner) {
             feedbackOutput += "<div class='flex-container repo-select'>";
             feedbackOutput += "<div class='item'><strong>"+data[i]["login"]+"("+data[i]["id"]+")</strong></div>";
             feedbackOutput += "<div class='item flex-container2'>";
-            // feedbackOutput += "<div class='item2'><img src='img/fork.svg'/><small>"+shorten(data[i]["forks_count"])+"</small></div>";
-            // feedbackOutput += "<div class='item2'><img src='img/star.svg'/><small>"+shorten(data[i]["stargazers_count"])+"</small></div>";
             feedbackOutput += "</div>";
             feedbackOutput += "<div class='item'><a href='#'><img src='"+data[i]["avatar_url"]+"' width='50px' height='50px' alt='missing'/></a></div>";
             feedbackOutput += "</div>";
