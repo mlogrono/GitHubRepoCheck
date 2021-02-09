@@ -1,0 +1,97 @@
+ul.no-bullets {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+}
+
+ul li {
+    /*background: gray;*/
+    border: 1px solid grey;
+    /*background: #ea3a53;*/
+    /*padding-left: 5px;*/
+    /*margin: 3px 3px 3px 3px;*/
+}
+
+input[type=text]:focus {
+    background-color: #DDDDFF;
+    /*border: 2px solid #555;*/
+}
+
+li {
+    float: left;
+    list-style: outside none none;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.repo-select:hover{
+    background: #E9E9E9; /* make this whatever you want */
+}
+
+/*a:hover {*/
+/*    background-color: lightgreen;*/
+/*}*/
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    /*padding-top: 3%;*/
+    padding-right: 3%;
+    padding-left: 3%;
+    justify-content: space-between;
+}
+
+.flex-container2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/*.flex-container:last-child {*/
+/*    margin-bottom: 10px;*/
+/*}*/
+
+.item {
+    width: 68%;
+    /*margin-bottom: 2%;*/
+}
+
+.item2 {
+    width: 50%;
+}
+
+.last {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.item:nth-child(2n) {
+    width: 30%;
+}
+
+.item:nth-child(3n) {
+    width: 100%;
+    padding-right: 5%;
+    padding-left: 5%;
+    /*margin-bottom: 3%;*/
+}
+
+.extra-color {
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/*.rounded-corners {*/
+/*    !*border-radius: 15rem;*!*/
+/*    !*border: 1rem solid #333333;*!*/
+/*    padding: 30rem;*/
+/*    !*width: 200rem;*!*/
+/*    !*height: 150rem;*!*/
+/*}*/

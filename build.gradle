@@ -1,0 +1,42 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'war'
+    id "com.github.node-gradle.node" version "3.0.0"
+//    id "com.moowork.node" version "1.2.0"
+}
+node {
+    version = '14.15.4'
+    npmVersion = '7.5.2'
+    download = true
+}
+//jar.dependsOn 'npm_run_build'
+//jar {
+//    from '' into 'static'
+//}
+
+group = 'com.github.analyzer'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '15'
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    runtimeOnly 'org.postgresql:postgresql'
+    compile 'org.webjars:bootstrap:4.6.0'
+    compile 'org.webjars:jquery:3.5.1'
+    implementation 'org.json:json:20171018'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
