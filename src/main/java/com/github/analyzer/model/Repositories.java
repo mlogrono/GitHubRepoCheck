@@ -9,19 +9,19 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Repositories {
 
-//    @JsonProperty("total_count")
-//    private int totalCount;
+    @JsonProperty("total_count")
+    private int totalCount;
 
     @JsonProperty("items")
     private List<Repository> items;
 
-//    public void setTotalCount(int totalCount) {
-//        this.totalCount = totalCount;
-//    }
-//
-//    public int getTotalCount() {
-//        return totalCount;
-//    }
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
 
     public void setItems(List<Repository> items) {
         this.items = items;

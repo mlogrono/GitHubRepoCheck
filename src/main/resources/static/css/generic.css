@@ -1,73 +1,7 @@
-ul.no-bullets {
-    list-style-type: none; /* Remove bullets */
-    padding: 0; /* Remove padding */
-    margin: 0; /* Remove margins */
+a {
+    color: #f3f3f3;
 }
 
-ul li {
-    border: 1px solid grey;
-}
-
-input[type=text]:focus {
-    background-color: #DDDDFF;
-}
-
-li {
-    float: left;
-    list-style: outside none none;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.repo-select:hover{
-    background: #E9E9E9;
-}
-
-.flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    padding-right: 3%;
-    padding-left: 3%;
-    justify-content: space-between;
-}
-
-.flex-container2 {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.item {
-    width: 68%;
-}
-
-.item2 {
-    width: 50%;
-}
-
-.last {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.item:nth-child(2n) {
-    width: 30%;
-}
-
-.item:nth-child(3n) {
-    width: 100%;
-    padding-right: 5%;
-    padding-left: 5%;
-}
-
-.extra-color {
-    border: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-hr {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+div {
+    color: #555555;
 }

@@ -6,23 +6,70 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.6.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/loader.css"/>
+    <link rel="stylesheet" type="text/css" href="css/flex-box.css"/>
+    <link rel="stylesheet" type="text/css" href="css/sticky-footer.css"/>
     <link rel="stylesheet" type="text/css" href="css/generic.css"/>
 </head>
 
 <body>
-<div class="container" style="min-height: 500px">
+
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" >
+        <a class="navbar-brand" href="#">
+            <img src='img/github_logo_white.png' width='65px' height='25px' alt='missing'/>
+            <img src='img/github_mark_light.png' width='25px' height='25px' alt='missing'/>
+            <b style="padding-left: 20px; font-size: 16px;">Repo Check</b>
+        </a>
+    </nav>
+</header>
+<main role="main" class="container">
     <div class="starter-template">
-        <h2>GitHub Repo Check</h2>
+        <h2 class="mt-5" style="padding-top: 30px;">Search</h2>
         <form class="form-horizontal" id="query-form" spellcheck="false">
             <div class="form-group form-group-lg">
-                <input type="text" class="form-control" id="query-box" placeholder="Search repositories by name..."/>
+                <input type="text" class="form-control" id="query-box" placeholder="Search repositories"/>
+<!--                <div class="flex-container-3">-->
+<!--                    <strong class="item-3" style="padding-left: 10px;">Search in:</strong>-->
+<!--                    <div class="form-check item-3">-->
+<!--                        <input class="form-check-input" type="checkbox" value="" id="query-in-name" checked>-->
+<!--                        <label class="form-check-label" for="query-in-name">-->
+<!--                            Name-->
+<!--                        </label>-->
+<!--                    </div>-->
+<!--                    <div class="form-check item-3">-->
+<!--                        <input class="form-check-input" type="checkbox" value="" id="query-in-description">-->
+<!--                        <label class="form-check-label" for="query-in-description">-->
+<!--                            Description-->
+<!--                        </label>-->
+<!--                    </div>-->
+<!--                    <div class="form-check item-3">-->
+<!--                        <input class="form-check-input" type="checkbox" value="" id="query-in-contents">-->
+<!--                        <label class="form-check-label" for="query-in-contents">-->
+<!--                            README-->
+<!--                        </label>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </form>
-        <div id="feedback"></div>
+        <br>
+        <div id="results">
+            <h5>Repository Results</h5>
+            <div class='border rounded extra-color last'>
+                <div id="feedback" ></div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="footer bg-dark">
+    <div class="container">
+        <span class="text-muted" style="padding-right: 6px;">GitHub Repo Check</span>
+        <a href = "mailto: michael.logrono.ph@gmail.com" class="text-muted" style="padding-left: 10px; border-left: 1px dashed #555; color: darkgray;"><small>Feedback</small></a>
     </div>
 </div>
 
 <script type="text/javascript" src="webjars/jquery/3.5.1/jquery.min.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>-->
 <script type="text/javascript" src="js/live_search.js"></script>
 </body>
 </html>

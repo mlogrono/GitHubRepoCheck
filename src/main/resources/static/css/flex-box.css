@@ -1,0 +1,85 @@
+ul.no-bullets {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+}
+
+/*ul li {*/
+/*    border: 1px solid grey;*/
+/*}*/
+
+/*input[type=text]:focus {*/
+/*    background-color: #DDDDFF;*/
+/*}*/
+
+li {
+    float: left;
+    list-style: outside none none;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.repo-select:hover{
+    background: #E9E9E9;
+}
+
+.flex-container-1 {
+    display: flex;
+    flex-wrap: wrap;
+    padding-right: 3%;
+    padding-left: 3%;
+    justify-content: space-between;
+}
+
+.flex-container-2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.flex-container-3 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+.item-1 {
+    width: 68%;
+}
+
+.item-2 {
+    width: 50%;
+}
+
+.item-3 {
+    /*width: 15%;*/
+    /*justify-content: space-between;*/
+    padding-right: 20px;
+}
+
+.last {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.item-1:nth-child(2n) {
+    width: 30%;
+}
+
+.item-1:nth-child(3n) {
+    width: 100%;
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+.extra-color {
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}

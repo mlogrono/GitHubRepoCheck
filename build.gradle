@@ -24,6 +24,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     compile 'org.webjars:bootstrap:4.6.0'
     compile 'org.webjars:jquery:3.5.1'
+    compile 'org.webjars.bower:twbs-pagination:1.4.1'
     implementation 'org.json:json:20171018'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-tomcat'

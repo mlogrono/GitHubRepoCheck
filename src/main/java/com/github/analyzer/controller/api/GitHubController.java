@@ -163,12 +163,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
@@ -183,27 +185,30 @@ public class GitHubController {
     public ResponseEntity<List<Repository>> query(@RequestParam(name = query) String queryText, @RequestParam(name = page, defaultValue = "1") String pageNumber) {
         WebClient client = GitHubClient.built();
         final HttpHeaders headers = new HttpHeaders();
+        System.out.println("Query ongoing!");
         List<Repository> repos = client.get()
                 .uri(uriBuilder -> {
                     URI path = uriBuilder.path("/search/repositories")
-                            .queryParam("q", queryText+"+in:name")
+//                            .queryParam("q", queryText+"+in:name")
+                            .queryParam("q", queryText)
                             .queryParam("page", pageNumber)
-                            .queryParam("per_page","15").build();
+                            .queryParam("per_page","10").build();
                     System.out.println("PATH: "+path.toString());
                     return path;
                 })
                 .exchangeToFlux(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
-                        headers.add("link", response.headers().header("link").get(0));
+                        parseLinkHeader(response.headers());
+
                         return response.bodyToFlux(Repositories.class)
                                 .map(Repositories::getItems);
                     }
                     else if (response.statusCode().is4xxClientError()) {
-                        System.out.println("4XX Error");
+                        System.out.println("4XX Error: "+response.toString());
                         return Flux.error(new Exception("Error 4XX: Client Error: " + response.toString()));
                     }
                     else if (response.statusCode().is5xxServerError()) {
-                        System.out.println("5XX Error");
+                        System.out.println("5XX Error: "+response.toString());
                         return Flux.error(new Exception("Error 5XX: Server Error: "+response.toString()));
                     }
                     else {
@@ -214,6 +219,18 @@ public class GitHubController {
                 .blockLast();
 
         return new ResponseEntity<>(repos, headers, HttpStatus.OK);
+    }
+
+    private Map<String, String> parseLinkHeader(ClientResponse.Headers headers) {
+        List<String> tempHeaders = headers.header("link");
+        if (tempHeaders.size() == 1) {
+            for(String h: tempHeaders) {
+                System.out.println("HEAD: " + h);
+            }
+//                            headers.add("link", tempHeaders.get(0));
+        }
+
+        return null;
     }
 
     @GetMapping("/api/contributors")
