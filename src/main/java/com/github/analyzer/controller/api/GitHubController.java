@@ -169,6 +169,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -192,15 +193,22 @@ public class GitHubController {
 //                            .queryParam("q", queryText+"+in:name")
                             .queryParam("q", queryText)
                             .queryParam("page", pageNumber)
-                            .queryParam("per_page","10").build();
+                            .queryParam("per_page","20").build();
                     System.out.println("PATH: "+path.toString());
                     return path;
                 })
                 .exchangeToFlux(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
-                        parseLinkHeader(response.headers());
+                        Map<String, String> map = parseLinkHeader(response.headers());
+                        for (String key: map.keySet()) {
+                            headers.add(key, map.get(key));
+                        }
 
                         return response.bodyToFlux(Repositories.class)
+                                .map(repositories -> {
+                                    headers.add("rec-count", Integer.toString(repositories.getTotalCount()));
+                                    return repositories;
+                                })
                                 .map(Repositories::getItems);
                     }
                     else if (response.statusCode().is4xxClientError()) {
@@ -218,19 +226,29 @@ public class GitHubController {
                 })
                 .blockLast();
 
+        for (String x: headers.keySet()) {
+            System.out.println("K:"+x+" - V:"+headers.get(x));
+        }
+
+
         return new ResponseEntity<>(repos, headers, HttpStatus.OK);
     }
 
-    private Map<String, String> parseLinkHeader(ClientResponse.Headers headers) {
-        List<String> tempHeaders = headers.header("link");
+    private Map<String, String> parseLinkHeader(ClientResponse.Headers respHeaders) {
+        List<String> tempHeaders = respHeaders.header("link");
+        Map<String, String> map = new HashMap<>();
         if (tempHeaders.size() == 1) {
-            for(String h: tempHeaders) {
-                System.out.println("HEAD: " + h);
+            String[] splits = tempHeaders.get(0).split(",");
+            String[] furtherSplit;
+            for(String sp: splits) {
+                System.out.println("HEAD: " + sp);
+                 furtherSplit = sp.split(">; rel=\"");
+                 map.put(furtherSplit[1].trim().substring(0, furtherSplit[1].trim().length() - 1),
+                         furtherSplit[0].trim().substring(1));
             }
-//                            headers.add("link", tempHeaders.get(0));
         }
 
-        return null;
+        return map;
     }
 
     @GetMapping("/api/contributors")
@@ -258,9 +276,6 @@ public class GitHubController {
                 })
                 .bodyToFlux(User.class).collectList().block();
 
-//        for (int ctr = 0; ctr < contributors.size(); ctr++) {
-//            System.out.println("CTR: "+contributors.get(ctr));
-//        }
         return contributors;
     }
 }

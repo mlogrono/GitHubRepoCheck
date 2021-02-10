@@ -42,13 +42,6 @@ public class Repositories {
         System.out.println("{\"items\": ["+ str +"]}");
         JSONObject jsonObj = new JSONObject("{\"items\": ["+ str +"]}");
 
-//        System.out.println("{ \"total_count\": " + totalCount + ", \"items\": ["+ str +"]}");
-//        JSONObject jsonObj = new JSONObject("{ \"total_count\": " + totalCount + ", \"items\": ["+ str +"]}");
-
-//        System.out.println("Pretty Print of JSON:");
-//        System.out.println(jsonObj.toString(4)); // pretty print json
-
         return jsonObj.toString(4);
-//        return str.toString();
     }
 }
