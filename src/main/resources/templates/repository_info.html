@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>GitHub Repo Check | Results</title>
+    <title>GitHub Repo Check | Query</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.6.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/loader.css"/>
@@ -25,24 +25,8 @@
 </header>
 <main role="main" class="container">
     <div class="starter-template">
-        <h2 class="mt-5" style="padding-top: 30px;">Search</h2>
-        <form class="form-horizontal" id="query-form" spellcheck="false">
-            <div class="form-group form-group-lg">
-                <input type="text" class="form-control" id="query-box" placeholder="Search repositories"/>
-            </div>
-        </form>
-        <br>
-        <div id="results">
-            <h5>Repository Results</h5>
-            <div class='border rounded extra-color last'>
-<!--                <div id="loader"></div>-->
-                <div class='flex-container-1 justify-content-center'>
-                    <div id="loader" class="item-3" ></div>
-                </div>
-                <div id="feedback" ><div class='flex-container-1'><div class='item-3'><small>You stare blankly into space.</small></div></div></div>
-            </div>
-            <div id="navi"></div>
-        </div>
+        <h2 class="mt-5" style="padding-top: 30px;">Contributors</h2>
+        <div id="users"></div>
     </div>
 </main>
 <div class="footer bg-dark">
@@ -53,6 +37,6 @@
 </div>
 
 <script type="text/javascript" src="webjars/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="js/live_search.js"></script>
+<script type="text/javascript" src="js/show_info.js"></script>
 </body>
 </html>

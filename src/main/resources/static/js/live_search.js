@@ -1,7 +1,8 @@
+var glo_page = 1;
+
 $(document).ready(function () {
     var wait;
     var previousQuery;
-    var glo_page = 1; //UPDATE THIS TODO
 
     // extended();
 
@@ -12,18 +13,18 @@ $(document).ready(function () {
     //     var owner = "";
     //     showResults(repo, owner);
     // });
-    $("#repo-select").keydown(function (event) {
-        var key = event.keyCode || event.charCode;
-        var query = $("#query-box").val();
-        console.log("back/del dectected");
-        if (key == 8 || key == 46) {
-            if (query.length <= 3 && previousQuery !== query) {
-                console.log("timeout cleared");
-                clearTimeout(wait);
-                return false;
-            }
-        }
-    });
+    // $("#repo-select").keydown(function (event) {
+    //     var key = event.keyCode || event.charCode;
+    //     var query = $("#query-box").val();
+    //     console.log("back/del detected");
+    //     if (key == 8 || key == 46) {
+    //         if (query.length <= 3 && previousQuery !== query) {
+    //             console.log("timeout cleared");
+    //             clearTimeout(wait);
+    //             return false;
+    //         }
+    //     }
+    // });
 
     $("#query-form").keyup(function (event) {
         event.preventDefault();
@@ -34,10 +35,18 @@ $(document).ready(function () {
             console.log("WHAT");
             $("#loader").addClass("loader");
             $("#feedback").html("<div style='padding-top: 30px;' class='flex-container-1 justify-content-center'><div class='item-3'><small>Checking repository names, descriptions, README files...</small></div></div>");
+            $("#navi").html("");
+            console.log("Difference: "+previousQuery+" and "+query);
+            if (previousQuery !== query){
+                glo_page = 1;
+            }
             previousQuery = query;
             wait = setTimeout(function () {
                 retrieveRepos(query, glo_page);
             }, 3000);
+        }
+        else if (query.length === 0) {
+            $("#feedback").html("<div class='flex-container-1'><div class='item-3'><small>You stare blankly into space.</small></div></div>");
         }
         else if (query.length <= 3 && query.length > 0){
             var feedbackOutput = "<div class='flex-container-1'><div class='item-3'><small>Query text is too short. Need more info.</small></div></div>";
@@ -105,8 +114,10 @@ function createRepoResponse (data, textStatus, link) {
     console.log("LEN:"+data.length);
     if (data.length > 0) {
         for (i = 0; i < data.length; i++) {
-            feedbackOutput += "<div class='flex-container-1 repo-select' onclick='showResults(\"" + data[i]["name"] + "\", \"" + data[i].owner["login"] + "\")'>";
-            feedbackOutput += "<div class='item-1'><h5>" + data[i]["full_name"] + "</h5></div>";
+            feedbackOutput += "<a target='_self' href='/repository?repo=" + data[i]["name"] + "&owner=" + data[i].owner["login"]+"' style='text-decoration: none;'>";
+            // feedbackOutput += "<div class='flex-container-1 repo-select' onclick='showResults(\"" + data[i]["name"] + "\", \"" + data[i].owner["login"] + "\")'>";
+            feedbackOutput += "<div class='flex-container-1 repo-select'>";
+            feedbackOutput += "<div class='item-1'><h6>" + data[i]["full_name"] + "</h6></div>";
             feedbackOutput += "<div class='item-1 flex-container-2'>";
             feedbackOutput += "<div class='item-2' style='text-align: center'><img src='img/fork.svg'/><small style='padding-left: 5px;'>" + shorten(data[i]["forks_count"]) + "</small></div>";
             feedbackOutput += "<div class='item-2' style='text-align: center'><img src='img/star.svg'/><small style='padding-left: 5px;'>" + shorten(data[i]["stargazers_count"]) + "</small></div>";
@@ -115,6 +126,8 @@ function createRepoResponse (data, textStatus, link) {
             feedbackOutput += "</div>";
             feedbackOutput += "<div class='item-1'><small>" + data[i]["description"] + "</small></div>";
             feedbackOutput += "</div>";
+            feedbackOutput += "</a>";
+
             if (i + 1 < data.length) {
                 feedbackOutput += "<hr>";
             }
@@ -152,40 +165,28 @@ function retrieveRepos(query, page) {
         dataType: 'json',
         cache: false,
         timeout: 600000,
-        // success: function (data, textStatus, request) {
-        //     console.log("SUCCESS ("+query+"): "+JSON.stringify(data, null, 4));
-        //     createRepoResponse(data, request.getResponseHeader("link"));
-        //     console.log("TEXT: "+textStatus);
-        //     console.log("REQ: "+request);
-        //
-        //
-        //     toggleSearchBox();
-        // },
         success: createRepoResponse,
         error: printError
     });
-}
+}s
 
 function createPaging(link) {
-
     var dirFirst = parseRequestParams(link.getResponseHeader('first'));
     var dirPrev = parseRequestParams(link.getResponseHeader('prev'));
     var dirNext = parseRequestParams(link.getResponseHeader('next'));
     var dirLast = parseRequestParams(link.getResponseHeader('last'));
     console.log(dirFirst+" - "+dirPrev+" - "+dirNext+" - "+dirLast);
 
-    var str = "<div class='flex-container-1' style='padding-top: 20px;'><div class='item-3'><nav aria-label='Page navigation'>";
+    var str = "<div class='flex-container-1 justify-content-center' style='padding-top: 20px;'><div class='item-3'><nav aria-label='Page navigation'>";
     str += "<ul class='pagination justify-content-center'>";
-    // str += "<li class='page-item disabled'><a class='page-link' href='#' tabIndex='-1'>First</a></li>";
 
     str += "<li class='page-item ";
     if (dirFirst === "") {
         str += "disabled'><div><a class='page-link' tabIndex='-1' href='#'>First</a></div></li>";
     }
     else {
-        str += "'><div onclick='retrieveRepos(\"" + $("#query-box").val() + "\"," + dirFirst + ");'><a class='page-link' tabIndex='-1' href='#'>First</a></div></li>";
+        str += "'><div onclick='$(function(){ glo_page = "+dirFirst+"; $(\"#query-box\").keyup(); });'><a class='page-link' tabIndex='-1' href='#'>First</a></div></li>";
     }
-    // str += "'><a class='page-link' tabIndex='-1' href='/api/query?query="+$("#query-box").val()+"&page="+dirFirst+"'>First</a></li>";
 
     var intPrev = parseInt(dirPrev);
     var intNext = parseInt(dirNext);
@@ -199,86 +200,21 @@ function createPaging(link) {
 
     console.log("END PAGINATION");
     if(dirPrev !== "") {
-        // href='/api/query?query="+$("#query-box").val()+"&page="+dirFirst+"'
-        str += "<li class='page-item'><div onclick='retrieveRepos(\""+$("#query-box").val()+"\","+dirPrev+");'><a class='page-link' href='#'>" + intPrev + "</a></div></li>";
-        // str += "<li class='page-item'><a class='page-link' href='/api/query?query="+$("#query-box").val()+"&page="+dirPrev+"'>" + intPrev + "</a></li>";
+        str += "<li class='page-item'><div onclick='$(function(){ glo_page = "+intPrev+"; $(\"#query-box\").keyup(); });'><a class='page-link' href='#'>" + intPrev + "</a></div></li>";
     }
     str += "<li class='page-item disabled'><a class='page-link' href='#' >"+page+"</a></li>";
     if (dirNext !== "") {
-        str += "<li class='page-item'><div onclick='retrieveRepos(\""+$("#query-box").val()+"\","+dirNext+");'><a class='page-link' href='#'>" + intNext + "</a></div></li>";
-        // str += "<li class='page-item'><a class='page-link' href='/api/query?query="+$("#query-box").val()+"&page="+dirNext+"'>" + intNext + "</a></li>";
+        str += "<li class='page-item'><div onclick='$(function(){ glo_page = "+intNext+"; $(\"#query-box\").keyup(); });'><a class='page-link' href='#'>" + intNext + "</a></div></li>";
     }
     str += "<li class='page-item ";
     if (dirLast === "") {
         str += "disabled";
     }
-    // str += "'><a class='page-link' href='/api/query?query="+$("#query-box").val()+"&page="+dirLast+"'>Last</a></li>";
-    str += "'><div onclick='retrieveRepos(\""+$("#query-box").val()+"\","+dirLast+");'><a class='page-link' href='#' >Last</a></div></li>";
+    str += "'><div onclick='$(function(){ glo_page = "+dirLast+"; $(\"#query-box\").keyup(); });'><a class='page-link' href='#' >Last</a></div></li>";
     str += "</ul>";
     str += "</nav></div></div>";
     console.log("END PAGINATION");
     return str;
 }
 
-// function createPaging() {
-//     var str = "<div><nav aria-label='Page navigation'>";
-//     str += "<ul class='pagination justify-content-center'>";
-//     str += "<li class='page-item disabled'>";
-//     str += "<a class='page-link' href='#' tabIndex='-1'>Previous</a>";
-//     str += "</li>";
-//     str += "<li class='page-item'><a class='page-link' href='#'>1</a></li>";
-//     str += "<li class='page-item'><a class='page-link' href='#'>2</a></li>";
-//     str += "<li class='page-item'><a class='page-link' href='#'>3</a></li>";
-//     str += "<li class='page-item'>";
-//     str += "<a class='page-link' href='#'>Next</a>";
-//     str += "</li>";
-//     str += "</ul>";
-//     str += "</nav></div>";
-//     return str;
-// }
-
-function showResults (repo, owner) {
-    // repo = "repo";
-    // owner = "suzeyu1992";
-    console.log("Fire next REST request with repo:"+repo+" by owner:"+owner);
-
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "/api/contributors",
-        data: { "repo" : repo, "owner" : owner},
-        dataType: 'json',
-        cache: false,
-        timeout: 600000,
-        success: showContributors,
-        error: printError
-    });
-
-    function showContributors(data) {
-        //TO FIX CLASS
-        var feedbackOutput = "<div class='border rounded extra-color last'>"; // onclick='showResults('repo', 'suzeyu1992');'
-        console.log("LEN:"+data.length);
-        for (i = 0; i < data.length; i++) {
-            feedbackOutput += "<div class='flex-container-1 repo-select'>";
-            feedbackOutput += "<div class='item-1'><strong>"+data[i]["login"]+"("+data[i]["id"]+")</strong></div>";
-            feedbackOutput += "<div class='item-1 flex-container-2'>";
-            feedbackOutput += "</div>";
-            feedbackOutput += "<div class='item-1'><a href='#'><img src='"+data[i]["avatar_url"]+"' width='50px' height='50px' alt='missing'/></a></div>";
-            feedbackOutput += "</div>";
-            if (i+1 < data.length) {
-                feedbackOutput += "<hr>";
-            }
-        }
-        feedbackOutput += "</div>";
-        $("#loader").removeClass("loader")
-        $("#feedback").html(feedbackOutput);
-        $("#navi").html(createPaging());
-    }
-}
-
-// function extended(){
-//     $("#header").html("<div style='background-color: red; height: 300px; width: 300px;'></div>");
-//     // $("#header").load("header.html");
-//     $("#footer").load("templates/footer.html");
-// }
 

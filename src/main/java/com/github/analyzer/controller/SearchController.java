@@ -21,7 +21,7 @@ public class SearchController {
         }
     }
 
-    @GetMapping(value = {"/search"})
+    @GetMapping("/search")
     public String search(@RequestParam(name = query, required = false, defaultValue = "") String queryText, Model model) {
         model.addAttribute(query, queryText);
         return "search";
