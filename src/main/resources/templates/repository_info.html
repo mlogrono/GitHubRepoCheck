@@ -19,16 +19,25 @@
 </header>
 <main role="main" class="container">
     <div class="starter-template">
-        <h2 class="mt-5" style="padding-top: 30px;">Contributors</h2>
-        <div id="users"></div>
+        <h3 class="mt-5" id="repo-title" style="padding-top: 30px;">Repo Information</h3>
+        <div id="results" style="padding-top: 20px;">
+            <h6>Contributors</h6>
+            <div class='border rounded extra-color last'>
+                <div class='flex-container-1 justify-content-center'>
+                    <div id="loader" class="item-3" ></div>
+                </div>
+                <div id="feedback">
+                    <div class='flex-container-1'>
+                        <div class='item-3'><small>You stare blankly into space.</small></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
-<div class="footer bg-dark">
-    <div class="container">
-        <span class="text-muted" style="padding-right: 6px;">GitHub Repo Check</span>
-        <a href = "mailto: michael.logrono.ph@gmail.com" class="text-muted" style="padding-left: 10px; border-left: 1px dashed #555; color: darkgray;"><small>Feedback</small></a>
-    </div>
-</div>
+<footer>
+    <div th:replace="fragment/footer ::  footer"></div>
+</footer>
 
 <script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/generic.js}"></script>

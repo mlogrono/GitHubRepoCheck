@@ -10,9 +10,20 @@ function printError(e) {
     $("#navi").html("");
     toggleSearchBox();
 }
+
 function toggleSearchBox() {
     $("#query-box").prop("disabled", function(tagsFound, currentVal) {
         //Do something here.
         return !currentVal;
     });
+}
+
+function getRequestParams() {
+    let params = {};
+    let query = window.location.search.substring(1).split('&');
+    for (let i = 0; i < query.length; i++) {
+        let pair = query[i].split('=');
+        params[pair[0]] = pair[1];
+    }
+    return params;
 }

@@ -114,7 +114,7 @@ function createRepoResponse (data, textStatus, link) {
     console.log("LEN:"+data.length);
     if (data.length > 0) {
         for (i = 0; i < data.length; i++) {
-            feedbackOutput += "<a target='_self' href='/repo?repo=" + data[i]["name"] + "&owner=" + data[i].owner["login"]+"' style='text-decoration: none;'>";
+            feedbackOutput += "<a target='_self' href='/repository?repo=" + data[i]["name"] + "&owner=" + data[i].owner["login"]+"' style='text-decoration: none;'>";
             // feedbackOutput += "<a target='_self' href='/repository_info.html' style='text-decoration: none;'>";
             // feedbackOutput += "<div class='flex-container-1 repo-select' onclick='showResults(\"" + data[i]["name"] + "\", \"" + data[i].owner["login"] + "\")'>";
             feedbackOutput += "<div class='flex-container-1 repo-select'>";

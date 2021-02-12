@@ -1,16 +1,22 @@
 $(document).ready(function () {
 
-    /** To connect data here**/
-    showResults();
+    let params = getRequestParams();
 
-    function showResults () {
-        // console.log("Fire next REST request with repo:"+repo+" by owner:"+owner);
+    setPageHeading(params);
+    showResults(params);
+
+    function showResults (params) {
+        console.log("Fire next REST request with repo:"+params.repo+" by owner:"+params.owner);
+        $("#loader").addClass("loader");
+
+
+        $("#feedback").html(initialContributorsText());
 
         $.ajax({
             type: "GET",
             contentType: "application/json",
             url: "/api/contributors",
-            data: { "repo" : repo, "owner" : owner},
+            data: { "repo" : params.repo, "owner" : params.owner},
             dataType: 'json',
             cache: false,
             timeout: 600000,
@@ -19,9 +25,9 @@ $(document).ready(function () {
         });
 
         function showContributors(data) {
-            var feedbackOutput = "<div class='border rounded extra-color last'>"; // onclick='showResults('repo', 'suzeyu1992');'
-            console.log("LEN:"+data.length);
-            for (i = 0; i < data.length; i++) {
+            // var feedbackOutput = "<a target='_self' href='#' style='text-decoration: none'>"; //Prolly do something like show commits in the past 100 commits
+            let feedbackOutput = "";
+            for (let i = 0; i < data.length; i++) {
                 feedbackOutput += "<div class='flex-container-1 repo-select'>";
                 feedbackOutput += "<div class='item-1'><strong>"+data[i]["login"]+"("+data[i]["id"]+")</strong></div>";
                 feedbackOutput += "<div class='item-1 flex-container-2'>";
@@ -32,11 +38,22 @@ $(document).ready(function () {
                     feedbackOutput += "<hr>";
                 }
             }
-            feedbackOutput += "</div>";
+            // feedbackOutput += "</a>";
             $("#loader").removeClass("loader")
             $("#feedback").html(feedbackOutput);
-            $("#navi").html(createPaging());
         }
+    }
+
+    function setPageHeading(params) {
+        $('#repo-title').html("Repository '"+params.owner+"/"+params.repo+"'");
+    }
+
+    function initialContributorsText() {
+        return "<div style='padding-top: 30px;' class='flex-container-1 justify-content-center'>" +
+            "<div class='item-3'>" +
+            "<small>Loading contributors...</small>" +
+            "</div>" +
+            "</div>";
     }
 });
 

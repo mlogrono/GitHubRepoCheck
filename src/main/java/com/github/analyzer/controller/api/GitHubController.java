@@ -124,10 +124,5 @@ public class GitHubController {
         .bodyToFlux(User.class).collectList().block();
     }
 
-//    @GetMapping("/api/loading")
-//    public String loadNewContent(@RequestParam(name = repo) String repoName, @RequestParam(name = owner) String ownerName, @RequestParam(name = "id") String dbId) {
-//        System.out.println("WHAT");
-//        return "{ dbId: \""+dbId+"\", "+repo+": \""+repoName+"\", "+owner+": \""+ownerName+"\"}";
-//    }
 
 }
