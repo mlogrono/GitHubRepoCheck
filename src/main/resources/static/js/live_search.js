@@ -70,25 +70,25 @@ $(document).ready(function () {
     });
 });
 
-function toggleSearchBox() {
-    $("#query-box").prop("disabled", function(tagsFound, currentVal) {
-        //Do something here.
-        return !currentVal;
-    });
-}
-
-function printError(e) {
-    console.log("EResp: "+e.responseText);
-    var prettyJson = JSON.stringify(JSON.parse(e.responseText), null, 4)
-    var feedbackOutput = "<div class='flex-container-1'><div class='item-3'><h5>Response Error</h5><pre>"
-        + prettyJson + "</pre></div></div>";
-    console.log("ERROR: "+prettyJson);
-
-    $("#loader").removeClass("loader");
-    $("#feedback").html(feedbackOutput);
-    $("#navi").html("");
-    toggleSearchBox();
-}
+// function toggleSearchBox() {
+//     $("#query-box").prop("disabled", function(tagsFound, currentVal) {
+//         //Do something here.
+//         return !currentVal;
+//     });
+// }
+//
+// function printError(e) {
+//     console.log("EResp: "+e.responseText);
+//     var prettyJson = JSON.stringify(JSON.parse(e.responseText), null, 4)
+//     var feedbackOutput = "<div class='flex-container-1'><div class='item-3'><h5>Response Error</h5><pre>"
+//         + prettyJson + "</pre></div></div>";
+//     console.log("ERROR: "+prettyJson);
+//
+//     $("#loader").removeClass("loader");
+//     $("#feedback").html(feedbackOutput);
+//     $("#navi").html("");
+//     toggleSearchBox();
+// }
 
 function parseRequestParams(responseHeader) {
     var linkParsed;
@@ -108,13 +108,14 @@ var shorten = function (num) {
 
 function createRepoResponse (data, textStatus, link) {
 
-    var i, feedbackOutput = "";
+    let i, feedbackOutput = "";
     console.log(">>> LINK: "+textStatus+" "+link.getResponseHeader('next'));
     // feedbackOutput = "<div class='border rounded extra-color last'>"; // onclick='showResults('repo', 'suzeyu1992');'
     console.log("LEN:"+data.length);
     if (data.length > 0) {
         for (i = 0; i < data.length; i++) {
-            feedbackOutput += "<a target='_self' href='/repository?repo=" + data[i]["name"] + "&owner=" + data[i].owner["login"]+"' style='text-decoration: none;'>";
+            feedbackOutput += "<a target='_self' href='/repo?repo=" + data[i]["name"] + "&owner=" + data[i].owner["login"]+"' style='text-decoration: none;'>";
+            // feedbackOutput += "<a target='_self' href='/repository_info.html' style='text-decoration: none;'>";
             // feedbackOutput += "<div class='flex-container-1 repo-select' onclick='showResults(\"" + data[i]["name"] + "\", \"" + data[i].owner["login"] + "\")'>";
             feedbackOutput += "<div class='flex-container-1 repo-select'>";
             feedbackOutput += "<div class='item-1'><h6>" + data[i]["full_name"] + "</h6></div>";
@@ -168,7 +169,7 @@ function retrieveRepos(query, page) {
         success: createRepoResponse,
         error: printError
     });
-}s
+}
 
 function createPaging(link) {
     var dirFirst = parseRequestParams(link.getResponseHeader('first'));

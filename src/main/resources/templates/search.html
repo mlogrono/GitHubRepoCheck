@@ -4,24 +4,24 @@
 <head>
     <title>GitHub Repo Check | Results</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.6.0/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="css/loader.css"/>
-    <link rel="stylesheet" type="text/css" href="css/flex-box.css"/>
-    <link rel="stylesheet" type="text/css" href="css/sticky-footer.css"/>
-    <link rel="stylesheet" type="text/css" href="css/generic.css"/>
-    <link rel="stylesheet" type="text/css" href="css/pagination.css"/>
+<!--    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.6.0/css/bootstrap.min.css"/>-->
+<!--    <link rel="stylesheet" type="text/css" href="css/loader.css"/>-->
+<!--    <link rel="stylesheet" type="text/css" href="css/flex-box.css"/>-->
+<!--    <link rel="stylesheet" type="text/css" href="css/sticky-footer.css"/>-->
+<!--    <link rel="stylesheet" type="text/css" href="css/generic.css"/>-->
+<!--    <link rel="stylesheet" type="text/css" href="css/pagination.css"/>-->
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/loader.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/flex-box.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sticky-footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/generic.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/pagination.css}"/>
 </head>
 
 <body>
 
 <header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" >
-        <a class="navbar-brand" href="#">
-            <img src='img/github_logo_white.png' width='65px' height='25px' alt='missing'/>
-            <img src='img/github_mark_light.png' width='25px' height='25px' alt='missing'/>
-            <b style="padding-left: 20px; font-size: 16px;">Repo Check</b>
-        </a>
-    </nav>
+    <div th:replace="fragment/header ::  header"></div>
 </header>
 <main role="main" class="container">
     <div class="starter-template">
@@ -45,14 +45,12 @@
         </div>
     </div>
 </main>
-<div class="footer bg-dark">
-    <div class="container">
-        <span class="text-muted" style="padding-right: 6px;">GitHub Repo Check</span>
-        <a href = "mailto: michael.logrono.ph@gmail.com" class="text-muted" style="padding-left: 10px; border-left: 1px dashed #555; color: darkgray;"><small>Feedback</small></a>
-    </div>
-</div>
+<footer>
+    <div th:replace="fragment/footer ::  footer"></div>
+</footer>
 
-<script type="text/javascript" src="webjars/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="js/live_search.js"></script>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/generic.js}"></script>
+<script type="text/javascript" th:src="@{/js/live_search.js}"></script>
 </body>
 </html>

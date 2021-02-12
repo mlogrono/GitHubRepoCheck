@@ -3,13 +3,13 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'war'
-    id "com.github.node-gradle.node" version "3.0.0"
+//    id "com.github.node-gradle.node" version "3.0.0"
 }
-node {
-    version = '14.15.4'
-    npmVersion = '7.5.2'
-    download = true
-}
+//node {
+//    version = '14.15.4'
+//    npmVersion = '7.5.2'
+//    download = true
+//}
 
 group = 'com.github.analyzer'
 version = '0.0.1-SNAPSHOT'
