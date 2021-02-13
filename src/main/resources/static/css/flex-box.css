@@ -23,6 +23,10 @@ li {
     background: #E9E9E9;
 }
 
+.user-select:hover{
+    background: #E9E9E9;
+}
+
 .flex-container-1 {
     display: flex;
     flex-wrap: wrap;
@@ -34,12 +38,20 @@ li {
 .flex-container-2 {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: start ;
 }
 
 .flex-container-3 {
     display: flex;
     flex-wrap: wrap;
+    justify-content: start;
+}
+
+.flex-container-4 {
+    display: flex;
+    flex-wrap: wrap;
+    padding-right: 10px;
+    padding-left: 10px;
     justify-content: start;
 }
 
@@ -51,10 +63,14 @@ li {
     width: 50%;
 }
 
-.item-3 {
-    /*width: 15%;*/
-    /*justify-content: space-between;*/
-    padding-right: 20px;
+/*.item-3 {*/
+/*    !*width: 15%;*!*/
+/*    !*justify-content: space-between;*!*/
+/*    padding-right: 20px;*/
+/*}*/
+
+.item-4 {
+    padding-left: 10px;
 }
 
 .last {

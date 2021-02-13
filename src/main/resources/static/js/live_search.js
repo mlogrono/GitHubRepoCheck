@@ -1,8 +1,8 @@
-var glo_page = 1;
+let glo_page = 1;
 
 $(document).ready(function () {
-    var wait;
-    var previousQuery;
+    let wait;
+    let previousQuery;
 
     // extended();
 
@@ -28,7 +28,7 @@ $(document).ready(function () {
 
     $("#query-form").keyup(function (event) {
         event.preventDefault();
-        var query = $("#query-box").val();
+        let query = $("#query-box").val();
         console.log("Char "+query+" len:"+query.length);
         clearTimeout(wait);
         if (query.length > 3){// && previousQuery !== query) {
@@ -49,7 +49,7 @@ $(document).ready(function () {
             $("#feedback").html("<div class='flex-container-1'><div class='item-3'><small>You stare blankly into space.</small></div></div>");
         }
         else if (query.length <= 3 && query.length > 0){
-            var feedbackOutput = "<div class='flex-container-1'><div class='item-3'><small>Query text is too short. Need more info.</small></div></div>";
+            let feedbackOutput = "<div class='flex-container-1'><div class='item-3'><small>Query text is too short. Need more info.</small></div></div>";
             $("#loader").removeClass("loader");
             $("#feedback").html(feedbackOutput);
             $("#navi").html("");
@@ -59,7 +59,7 @@ $(document).ready(function () {
     });
 
     $("#query-box").keypress(function (event){
-        var pattern = /[a-zA-Z0-9.\-_]/;
+        let pattern = /[a-zA-Z0-9.\-_]/;
         if (!pattern.test(String.fromCharCode(event.which))) {
             console.log("Not accepted input");
             event.preventDefault();
@@ -91,7 +91,7 @@ $(document).ready(function () {
 // }
 
 function parseRequestParams(responseHeader) {
-    var linkParsed;
+    let linkParsed;
     if (responseHeader != null) {
         linkParsed = responseHeader.split("?")[1].split("&")[1].split("=")[1];
     }
@@ -102,11 +102,11 @@ function parseRequestParams(responseHeader) {
     return linkParsed;
 }
 
-var shorten = function (num) {
+function shorten(num) {
     return Math.abs(num) > 999 ? Math.sign(num)*((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
 }
 
-function createRepoResponse (data, textStatus, link) {
+function createRepoResponse(data, textStatus, link) {
 
     let i, feedbackOutput = "";
     console.log(">>> LINK: "+textStatus+" "+link.getResponseHeader('next'));
@@ -120,8 +120,8 @@ function createRepoResponse (data, textStatus, link) {
             feedbackOutput += "<div class='flex-container-1 repo-select'>";
             feedbackOutput += "<div class='item-1'><h6>" + data[i]["full_name"] + "</h6></div>";
             feedbackOutput += "<div class='item-1 flex-container-2'>";
-            feedbackOutput += "<div class='item-2' style='text-align: center'><img src='img/fork.svg'/><small style='padding-left: 5px;'>" + shorten(data[i]["forks_count"]) + "</small></div>";
-            feedbackOutput += "<div class='item-2' style='text-align: center'><img src='img/star.svg'/><small style='padding-left: 5px;'>" + shorten(data[i]["stargazers_count"]) + "</small></div>";
+            feedbackOutput += "<div class='item-2' ><img src='img/fork.svg'/><small style='padding-left: 3px;'>" + shorten(data[i]["forks_count"]) + "</small></div>";
+            feedbackOutput += "<div class='item-2' ><img src='img/star.svg'/><small style='padding-left: 3px;'>" + shorten(data[i]["stargazers_count"]) + "</small></div>";
             // feedbackOutput += "<div class='item-2'><svg viewBox='0 0 512 512' enable-background='new 0 0 512 512'\"' xml:space='\"'preserve'\"' width='24' height='24' viewBox='0 0 24 24'><path fill-rule='evenodd' d='M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z'></path></svg><small>"+shorten(data[i]["forks_count"])+"</small></div>";
             // feedbackOutput += "<div class='item-2'><svg enable-background='new 0 0 512 512' width='24' height='24' viewBox='0 0 24 24'><path fill-rule='evenodd' d='M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z'></path></svg><small>"+shorten(data[i]["stargazers_count"])+"</small></div>";
             feedbackOutput += "</div>";
@@ -172,13 +172,13 @@ function retrieveRepos(query, page) {
 }
 
 function createPaging(link) {
-    var dirFirst = parseRequestParams(link.getResponseHeader('first'));
-    var dirPrev = parseRequestParams(link.getResponseHeader('prev'));
-    var dirNext = parseRequestParams(link.getResponseHeader('next'));
-    var dirLast = parseRequestParams(link.getResponseHeader('last'));
+    let dirFirst = parseRequestParams(link.getResponseHeader('first'));
+    let dirPrev = parseRequestParams(link.getResponseHeader('prev'));
+    let dirNext = parseRequestParams(link.getResponseHeader('next'));
+    let dirLast = parseRequestParams(link.getResponseHeader('last'));
     console.log(dirFirst+" - "+dirPrev+" - "+dirNext+" - "+dirLast);
 
-    var str = "<div class='flex-container-1 justify-content-center' style='padding-top: 20px;'><div class='item-3'><nav aria-label='Page navigation'>";
+    let str = "<div class='flex-container-1 justify-content-center' style='padding-top: 20px;'><div class='item-3'><nav aria-label='Page navigation'>";
     str += "<ul class='pagination justify-content-center'>";
 
     str += "<li class='page-item ";
@@ -189,9 +189,9 @@ function createPaging(link) {
         str += "'><div onclick='$(function(){ glo_page = "+dirFirst+"; $(\"#query-box\").keyup(); });'><a class='page-link' tabIndex='-1' href='#'>First</a></div></li>";
     }
 
-    var intPrev = parseInt(dirPrev);
-    var intNext = parseInt(dirNext);
-    var page;
+    let intPrev = parseInt(dirPrev);
+    let intNext = parseInt(dirNext);
+    let page;
     if (intPrev === undefined || isNaN(intPrev)) {
         page = intNext - 1;
     }

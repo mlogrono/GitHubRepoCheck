@@ -3,13 +3,12 @@ $(document).ready(function () {
     let params = getRequestParams();
 
     setPageHeading(params);
-    showResults(params);
+    showContributors(params);
 
-    function showResults (params) {
-        console.log("Fire next REST request with repo:"+params.repo+" by owner:"+params.owner);
+    function showContributors (params) {
+
+        console.log("Fire contributors REST request with repo:"+params.repo+" by owner:"+params.owner);
         $("#loader").addClass("loader");
-
-
         $("#feedback").html(initialContributorsText());
 
         $.ajax({
@@ -21,6 +20,7 @@ $(document).ready(function () {
             cache: false,
             timeout: 600000,
             success: showContributors,
+            // success: function(data) { allContributors = data; },
             error: printError
         });
 
@@ -28,11 +28,9 @@ $(document).ready(function () {
             // var feedbackOutput = "<a target='_self' href='#' style='text-decoration: none'>"; //Prolly do something like show commits in the past 100 commits
             let feedbackOutput = "";
             for (let i = 0; i < data.length; i++) {
-                feedbackOutput += "<div class='flex-container-1 repo-select'>";
-                feedbackOutput += "<div class='item-1'><strong>"+data[i]["login"]+"("+data[i]["id"]+")</strong></div>";
-                feedbackOutput += "<div class='item-1 flex-container-2'>";
-                feedbackOutput += "</div>";
-                feedbackOutput += "<div class='item-1'><a href='#'><img src='"+data[i]["avatar_url"]+"' width='50px' height='50px' alt='missing'/></a></div>";
+                feedbackOutput += "<div class='flex-container-4 user-select' style='align-items:center;'>";
+                feedbackOutput += "<img style='vertical-align: middle; margin-right: 10px;' src='"+data[i]["avatar_url"]+"' width='50px' height='50px' alt='missing'/>";
+                feedbackOutput += "<span>"+data[i]["login"]+"</span>";
                 feedbackOutput += "</div>";
                 if (i+1 < data.length) {
                     feedbackOutput += "<hr>";
@@ -42,6 +40,20 @@ $(document).ready(function () {
             $("#loader").removeClass("loader")
             $("#feedback").html(feedbackOutput);
         }
+
+        // function a() {
+        //     $.ajax({
+        //         type: "GET",
+        //         contentType: "application/json",
+        //         url: "/api/commits",
+        //         data: { "repo" : params.repo, "owner" : params.owner},
+        //         dataType: 'json',
+        //         cache: false,
+        //         timeout: 600000,
+        //         success: function(data) { allCommits = data; },
+        //         error: printError
+        //     });
+        // }
     }
 
     function setPageHeading(params) {

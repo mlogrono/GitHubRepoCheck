@@ -1,7 +1,7 @@
 function printError(e) {
     console.log("EResp: "+e.responseText);
-    var prettyJson = JSON.stringify(JSON.parse(e.responseText), null, 4)
-    var feedbackOutput = "<div class='flex-container-1'><div class='item-3'><h5>Response Error</h5><pre>"
+    let prettyJson = JSON.stringify(JSON.parse(e.responseText), null, 4)
+    let feedbackOutput = "<div class='flex-container-1'><div class='item-3'><h5>Response Error</h5><pre>"
         + prettyJson + "</pre></div></div>";
     console.log("ERROR: "+prettyJson);
 
