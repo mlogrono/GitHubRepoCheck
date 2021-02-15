@@ -13,7 +13,6 @@ function printError(e) {
 
 function toggleSearchBox() {
     $("#query-box").prop("disabled", function(tagsFound, currentVal) {
-        //Do something here.
         return !currentVal;
     });
 }

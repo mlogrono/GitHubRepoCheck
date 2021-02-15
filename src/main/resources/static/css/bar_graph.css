@@ -10,7 +10,7 @@
 body {
     color: #212121;
     -webkit-font-smoothing: antialiased;
-    padding: 2%;
+    /*padding: 2%;*/
     line-height: 1;
 }
 h1 {

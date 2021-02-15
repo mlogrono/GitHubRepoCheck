@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+    let infoHeight = '650px';
     let params = getRequestParams();
 
     setPageHeading(params);
@@ -9,7 +10,9 @@ $(document).ready(function () {
 
         console.log("Fire contributors REST request with repo:"+params.repo+" by owner:"+params.owner);
         $("#loader1").addClass("loader");
-        $("#feedback1").html(initialContributorsText());
+        $("#loader2").addClass("loader");
+        $("#feedback1").html(initialText("Loading contributors...")).css('height', '');;
+        $("#feedback2").html(initialText("Loading Git logs...")).css('height', '');
 
         $.ajax({
             type: "GET",
@@ -20,7 +23,6 @@ $(document).ready(function () {
             cache: false,
             timeout: 600000,
             success: retrieveCommits,
-            // success: function(data) { allContributors = data; },
             error: printError
         });
 
@@ -35,6 +37,7 @@ $(document).ready(function () {
                 timeout: 600000,
                 success: function(commits){
                     showContributorsData(contributors, commits);
+                    printGITHtml(contributors, commits);
                 },
                 error: printError
             });
@@ -48,19 +51,25 @@ $(document).ready(function () {
             for (let i = 0; i < contributors.length; i++) {
                 let ct = 0;
                 for (let j = 0; j < commits.length; j++) {
-                    console.log("Count: "+i+" "+j);
                     let contributor = contributors[i];
-                    let committer = commits[j].committer;
+                    let committer = commits[j].author;
                     if (contributor && committer && contributor.login === committer.login) {
                         ct++;
                     }
                 }
                 counters[i] = { login: contributors[i].login, avatar_url: contributors[i].avatar_url, count: ct};
+                console.log(counters[i]);
                 recordCount += ct;
             }
 
             counters.sort(function (a, b){
-                return b.count - a.count;
+                let ret = b.count - a.count;
+                if (ret === 0) {
+                    if (b.login !== null && a.login !== null) {
+                        ret = a.login.localeCompare(b.login);
+                    }
+                }
+                return ret;
             });
             console.log(counters);
 
@@ -71,7 +80,7 @@ $(document).ready(function () {
     function printContributorsHtml(displayItems, itemCount) {
         // console.log("---------------");
         let str = "";
-        $('#show-commits-header').html("Past "+itemCount+" commits");
+        $('#show-commits-header').html("Past "+itemCount+" commits by Author");
         for (let i = 0; i < displayItems.length; i++) {
             let holder = "";
             if (displayItems[i].count > 0) {
@@ -82,7 +91,7 @@ $(document).ready(function () {
                     str += "<div style='margin-right: 10px;'>";
                         str += "<img style='vertical-align: middle;' src='"+displayItems[i]["avatar_url"]+"' ";
                         if (displayItems[i].count > 0) {
-                            str += "width='60px' height='60px'";
+                            str += "width='40px' height='40px'";
                         }
                         else {
                             str += "width='20px' height='20px'";
@@ -114,51 +123,46 @@ $(document).ready(function () {
             }
         }
 
-        // for (let i = 0; i < displayItems.length; i++) {
-        //     str += "<div class='flex-container-4 user-select' style='align-items:center;'>";
-        //         str += "<div class=' ' style='display: flex; align-items:center; width: 20%; flex-direction: row-reverse;'>";
-        //             str += "<img style='vertical-align: middle; margin-left: 10px;' src='"+displayItems[i]["avatar_url"]+"' width='50px' height='50px' alt='missing'/>";
-        //             str += "<small>"+displayItems[i]["login"]+"</small>";
-        //         str += "</div>";
-        //         str += "<div style='vertical-align: middle; flex-grow: 1; '>";
-        //             str += "<div class='bar' style='flex-wrap: wrap; height: 20px; overflow: hidden' data-percent='"+(displayItems[i].count/itemCount)*100+"%'></div>";
-        //         str += "</div>"
-        //     str += "</div>";
-        //     if (i+1 < displayItems.length) {
-        //         str += "<hr>";
-        //     }
-        // }
-
-        // for (let i = 0; i < displayItems.length; i++) {
-        //     str += "<div class='flex-container-4 user-select' style='align-items:center; flex-direction: row-reverse;'>";
-        //     str += "<div class='bar' style='height: 20px; overflow: hidden' data-percent='"+(displayItems[i].count/itemCount)*100+"%'></div>";
-        //         str += "<img style='vertical-align: middle; margin-left: 10px;' src='"+displayItems[i]["avatar_url"]+"' width='50px' height='50px' alt='missing'/>";
-        //         str += "<small>"+displayItems[i]["login"]+"</small>";
-        //         // str += "<div>"
-        //
-        //         // str += "</div>";
-        //     str += "</div>";
-        //
-        //     if (i+1 < displayItems.length) {
-        //         str += "<hr>";
-        //     }
-        // }
-
-        $("#loader1").removeClass("loader")
-        $("#feedback1").html(str);
+        $("#loader1").removeClass("loader");
+        $("#feedback1").html(str).css('height', infoHeight);;
         setBarAnimation();
 
-        // console.log("---------------");
+    }
+
+    //commit ca82a6dff817ec66f44342007202690a93763949
+    //Author: Scott Chacon <schacon@gee-mail.com>
+    //Date:   Mon Mar 17 21:52:11 2008 -0700
+    //
+    //    Change version number
+
+    function printGITHtml(contributors, commits) {
+        let str = "";
+
+        for (let i = 0; i < commits.length; i++) {
+            str += "<div style='padding-right: 3%; padding-left: 3%;'>";
+                str += "<div><strong>commit</strong><small> "+commits[i].sha+"</small></div>";
+                let author = commits[i].commit.author;
+                str += "<div><strong>Author:</strong><small> "+author.name+" &lt;"+author.email+"&gt;</small></div>";
+                str += "<div><strong>Date:</strong><small> "+author.date+"</small></div>";
+                str += "<div style='margin: 15px 20px 30px 20px;'><small>"+commits[i].commit.message+"</small></div>";
+            str += "</div>";
+            if (i + 1 < commits.length) {
+                str += "<hr>";
+            }
+        }
+
+        $("#loader2").removeClass("loader");
+        $("#feedback2").html(str).css('height', infoHeight);
     }
 
     function setPageHeading(params) {
         $('#repo-title').html("Repository '"+params.owner+"/"+params.repo+"'");
     }
 
-    function initialContributorsText() {
+    function initialText(string) {
         return "<div style='padding-top: 30px;' class='flex-container-1 justify-content-center'>" +
             "<div class='item-3'>" +
-            "<small>Loading contributors...</small>" +
+            "<small>"+string+"</small>" +
             "</div>" +
             "</div>";
     }

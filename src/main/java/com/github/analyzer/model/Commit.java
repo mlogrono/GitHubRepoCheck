@@ -3,14 +3,7 @@ package com.github.analyzer.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.net.URL;
 import java.util.Date;
-
-//commit ca82a6dff817ec66f44342007202690a93763949
-//Author: Scott Chacon <schacon@gee-mail.com>
-//Date:   Mon Mar 17 21:52:11 2008 -0700
-//
-//    Change version number
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Commit {
@@ -20,12 +13,6 @@ public class Commit {
 
     @JsonProperty("commit")
     private GitDetails details;
-
-//    @JsonProperty("date")
-//    private String date;
-//
-//    @JsonProperty("message")
-//    private String message;
 
     @JsonProperty("url")
     private String url;
