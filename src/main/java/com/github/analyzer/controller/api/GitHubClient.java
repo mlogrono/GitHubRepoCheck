@@ -34,7 +34,8 @@ public final class GitHubClient {
                 .baseUrl("https://api.github.com")
                 .defaultHeader(HttpHeaders.ACCEPT, "application/vnd.github.v3.json")
                 .defaultHeader(HttpHeaders.USER_AGENT, "Spring 5 WebClient")
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Basic "+ USER +":" + TOKEN)
+//                .defaultHeader(HttpHeaders.AUTHORIZATION, "Basic "+ USER +":" + TOKEN)
+//                .defaultHeader(HttpHeaders.AUTHORIZATION, "token "+ TOKEN)
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build();
     }

@@ -3,9 +3,9 @@ $(document).ready(function () {
     let params = getRequestParams();
 
     setPageHeading(params);
-    showContributors(params);
+    retrieveContributors(params);
 
-    function showContributors (params) {
+    function retrieveContributors (params) {
 
         console.log("Fire contributors REST request with repo:"+params.repo+" by owner:"+params.owner);
         $("#loader").addClass("loader");
@@ -19,41 +19,84 @@ $(document).ready(function () {
             dataType: 'json',
             cache: false,
             timeout: 600000,
-            success: showContributors,
+            success: retrieveCommits,
             // success: function(data) { allContributors = data; },
             error: printError
         });
 
-        function showContributors(data) {
-            // var feedbackOutput = "<a target='_self' href='#' style='text-decoration: none'>"; //Prolly do something like show commits in the past 100 commits
-            let feedbackOutput = "";
-            for (let i = 0; i < data.length; i++) {
-                feedbackOutput += "<div class='flex-container-4 user-select' style='align-items:center;'>";
-                feedbackOutput += "<img style='vertical-align: middle; margin-right: 10px;' src='"+data[i]["avatar_url"]+"' width='50px' height='50px' alt='missing'/>";
-                feedbackOutput += "<span>"+data[i]["login"]+"</span>";
-                feedbackOutput += "</div>";
-                if (i+1 < data.length) {
-                    feedbackOutput += "<hr>";
-                }
-            }
-            // feedbackOutput += "</a>";
-            $("#loader").removeClass("loader")
-            $("#feedback").html(feedbackOutput);
+        function retrieveCommits(contributors) {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "/api/commits",
+                data: { "repo" : params.repo, "owner" : params.owner},
+                dataType: 'json',
+                cache: false,
+                timeout: 600000,
+                success: function(commits){
+                    showContributorsData(contributors, commits);
+                },
+                error: printError
+            });
         }
 
-        // function a() {
-        //     $.ajax({
-        //         type: "GET",
-        //         contentType: "application/json",
-        //         url: "/api/commits",
-        //         data: { "repo" : params.repo, "owner" : params.owner},
-        //         dataType: 'json',
-        //         cache: false,
-        //         timeout: 600000,
-        //         success: function(data) { allCommits = data; },
-        //         error: printError
-        //     });
-        // }
+        function showContributorsData(contributors, commits) {
+            console.log(contributors);
+            console.log(commits);
+            let counters = [{}], recordCount = 0;
+
+            for (let i = 0; i < contributors.length; i++) {
+                let ct = 0;
+                for (let j = 0; j < commits.length; j++) {
+                    console.log("Count: "+i+" "+j);
+                    let contributor = contributors[i];
+                    let committer = commits[j].committer;
+                    if (contributor && committer && contributor.login === committer.login) {
+                        ct++;
+                    }
+                }
+                counters[i] = { login: contributors[i].login, avatar_url: contributors[i].avatar_url, count: ct};
+                recordCount += ct;
+            }
+
+            counters.sort(function (a, b){
+                return b.count - a.count;
+            });
+            console.log(counters);
+
+            printContributorsHtml(counters, recordCount);
+        }
+    }
+
+    function printContributorsHtml(displayItems, itemCount) {
+        // console.log("---------------");
+        let str = "";
+        for (let i = 0; i < displayItems.length; i++) {
+            str += "<div class='flex-container-4 user-select' style='align-items:center; flex-direction: row-reverse;'>";
+            str += "<img style='vertical-align: middle; margin-left: 10px;' src='"+displayItems[i]["avatar_url"]+"' width='50px' height='50px' alt='missing'/>";
+            str += "<small>"+displayItems[i]["login"]+"</small>";
+            // str += "<div class='bar' data-percent='"+(displayItems[i].count/itemCount)*100+"%'><span class='label'>"+displayItems[i].count+"</span></div>";
+
+            str += "</div>";
+            str += "<div class='bar' style='height: 20px;' data-percent='"+(displayItems[i].count/itemCount)*100+"%'></div>";
+
+            // str += "<div class='bar' data-percent='90%'><span class='label'>820</span></div>";
+            // str += "<div class='bar' data-percent='85%'><span class='label'>"+displayItems[i].count+"</span></div>";
+
+            if (i+1 < displayItems.length) {
+                str += "<hr>";
+            }
+        }
+// let i = 0;
+//         str += "<div class='bar' data-percent='40%'></div>";
+        // str += "<div class='bar' data-percent='"+(displayItems[i].count/itemCount)*100+"%'><span class='label'>"+displayItems[i].count+"</span></div>";
+        // str += "<div class='bar' data-percent='"+(displayItems[i].count/itemCount)*100+"%'><span class='label'>"+displayItems[i].count+"</span></div>";
+
+        $("#loader").removeClass("loader")
+        $("#feedback").html(str);
+        setBarAnimation();
+
+        // console.log("---------------");
     }
 
     function setPageHeading(params) {

@@ -5,6 +5,8 @@
     <title>GitHub Repo Check | Result</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.6.0/css/bootstrap.min.css}"/>
+    <link href="https://fonts.googleapis.com/css?family=Electrolize&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bar_graph.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/loader.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/flex-box.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/sticky-footer.css}"/>
@@ -20,8 +22,9 @@
 <main role="main" class="container">
     <div class="starter-template">
         <h3 class="mt-5" id="repo-title" style="padding-top: 30px;">Repo Information</h3>
-        <div id="results" style="padding-top: 20px; width: fit-content; min-width: 180px;">
-            <h5>All Contributors</h5>
+        <div id="results" style="padding-top: 20px; ">
+<!--            width: fit-content; min-width: 180px;">-->
+            <h5>Past 100 commits</h5>
             <div class='border rounded extra-color last'>
                 <div class='flex-container-1 justify-content-center'>
                     <div id="loader" class="item-3" ></div>
@@ -35,12 +38,28 @@
         </div>
     </div>
 </main>
+
+<!--<div class="wrap">-->
+<!--    <h1>JavaScript Animated Bar Graphs</h1>-->
+<!--    <div class="holder"><div class="bar " data-percent="95%"><span class="label">HTML</span></div>-->
+<!--        <div class="bar" data-percent="80%"><span class="label second">CSS</span></div>-->
+<!--        <div class="bar" data-percent="65%"><span class="label">JavaScript</span></div>-->
+<!--        <div class="bar" data-percent="75%"><span class="label second">jQuery</span></div>-->
+<!--        <div class="bar" data-percent="90%"><span class="label">Bootstrap</span></div>-->
+<!--        <div class="bar" data-percent="40%"><span class="label second">React</span></div>-->
+<!--        <div class="bar" data-percent="45%"><span class="label ">Vue</span></div>-->
+<!--        <div class="bar" data-percent="50%"><span class="label second">Angular</span></div>-->
+<!--        <div class="bar" data-percent="95%"><span class="label">CMS</span></div>-->
+<!--        <div class="bar" data-percent="70%"><span class="label second">Node JS</span></div>-->
+<!--    </div>-->
+
 <footer>
     <div th:replace="fragment/footer ::  footer"></div>
 </footer>
 
 <script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/generic.js}"></script>
+<script type="text/javascript" th:src="@{/js/bar_graph.js}"></script>
 <script type="text/javascript" th:src="@{/js/show_info.js}"></script>
 </body>
 </html>

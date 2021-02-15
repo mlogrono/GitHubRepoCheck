@@ -1,5 +1,6 @@
 package com.github.analyzer.controller.api;
 
+import com.github.analyzer.model.Commit;
 import com.github.analyzer.model.Repositories;
 import com.github.analyzer.model.Repository;
 import com.github.analyzer.model.User;
@@ -102,27 +103,45 @@ public class GitHubController {
     public List<User> resultContributors(@RequestParam(name = repo) String repoName, @RequestParam(name = owner) String ownerName) {
         WebClient client = GitHubClient.built();
 
-        return client.get()
-        .uri(uriBuilder -> {
-            URI path = uriBuilder.path(String.format("/repos/%1$s/%2$s/contributors", ownerName, repoName)).build();
-            System.out.println("PATH: "+path.toString());
-            return path;
-        })
-        .retrieve()
-        .onStatus(HttpStatus::is4xxClientError, clientResponse -> {
+        return setErrorHandlers(client.get()
+                .uri(uriBuilder -> {
+                    URI path = uriBuilder.path(String.format("/repos/%1$s/%2$s/contributors", ownerName, repoName))
+                            .build();
+                    System.out.println("PATH: "+path.toString());
+                    return path;
+                })
+                .retrieve())
+                .bodyToFlux(User.class).collectList().block();
+    }
+
+    @GetMapping("/api/commits")
+    public List<Commit> resultCommits(@RequestParam(name = repo) String repoName, @RequestParam(name = owner) String ownerName) {
+        WebClient client = GitHubClient.built();
+
+        return setErrorHandlers(client.get()
+                .uri(uriBuilder -> {
+                    URI path = uriBuilder.path(String.format("/repos/%1$s/%2$s/commits", ownerName, repoName))
+                            .queryParam("per_page", 100)
+                            .build();
+                    System.out.println("PATH: "+path.toString());
+                    return path;
+                })
+                .retrieve())
+                .bodyToFlux(Commit.class).collectList().block();
+    }
+
+    private WebClient.ResponseSpec setErrorHandlers(WebClient.ResponseSpec spec) {
+        return spec.onStatus(HttpStatus::is4xxClientError, clientResponse -> {
             System.out.println("4XX Error");
             return Mono.error(new Exception("Error 4XX: Client Error: " + clientResponse.toString()));
         })
         .onStatus(HttpStatus::is5xxServerError, clientResponse -> {
-            System.out.println("4XX Error");
+            System.out.println("5XX Error");
             return Mono.error(new Exception("Error 5XX: Server Error: "+clientResponse.toString()));
         })
         .onStatus(HttpStatus::isError, clientResponse -> {
             System.out.println("ERROR");
             return Mono.error(new Exception("ERROR ERROR ERROR"));
-        })
-        .bodyToFlux(User.class).collectList().block();
+        });
     }
-
-
 }
