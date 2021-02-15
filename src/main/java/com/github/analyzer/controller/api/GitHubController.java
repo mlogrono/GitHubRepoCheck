@@ -1,9 +1,12 @@
 package com.github.analyzer.controller.api;
 
+import com.github.analyzer.AnalyzerApplication;
 import com.github.analyzer.model.Commit;
 import com.github.analyzer.model.Repositories;
 import com.github.analyzer.model.Repository;
 import com.github.analyzer.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 public class GitHubController {
+    Logger log = LoggerFactory.getLogger(GitHubController.class);
+
     private static final String query = "query";
     private static final String page = "page";
 
@@ -61,10 +66,12 @@ public class GitHubController {
                     }
                     else if (response.statusCode().is4xxClientError()) {
                         System.out.println("4XX Error: "+response.toString());
+                        log.error(response.statusCode().toString());
                         return Flux.error(new Exception("Error 4XX: Client Error: " + response.toString()));
                     }
                     else if (response.statusCode().is5xxServerError()) {
                         System.out.println("5XX Error: "+response.toString());
+                        log.error(response.statusCode().toString());
                         return Flux.error(new Exception("Error 5XX: Server Error: "+response.toString()));
                     }
                     else {
