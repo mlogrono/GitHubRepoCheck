@@ -33,6 +33,7 @@ function setBarAnimation(){
         let $bar = $(this);
         $(this).append('<span class="count"></span>')
         setTimeout(function(){
+            console.log("WID: "+$bar.attr('data-percent'));
             $bar.css('width', $bar.attr('data-percent'));
         }, i*100);
     });
@@ -44,7 +45,8 @@ function setBarAnimation(){
             duration: 2000,
             easing: 'swing',
             step: function (now) {
-                $(this).text(Math.ceil(now) +'%');
+                // $(this).text(Math.ceil(now) +'%');
+                $(this).text(now.toFixed(2) +'%');
             }
         });
     });

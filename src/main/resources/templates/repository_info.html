@@ -22,16 +22,32 @@
 <main role="main" class="container">
     <div class="starter-template">
         <h3 class="mt-5" id="repo-title" style="padding-top: 30px;">Repo Information</h3>
-        <div id="results" style="padding-top: 20px; ">
+        <div id="results" class='flex-container-1' style="padding-top: 20px; align-content: space-evenly; overflow: hidden;">
 <!--            width: fit-content; min-width: 180px;">-->
-            <h5>Past 100 commits</h5>
-            <div class='border rounded extra-color last'>
-                <div class='flex-container-1 justify-content-center'>
-                    <div id="loader" class="item-3" ></div>
+            <div style="width: 48%;">
+                <h6 id="show-commits-header">Past commits</h6>
+                <div class='border rounded extra-color last'>
+                    <div class='flex-container-1 justify-content-center'>
+                        <div id="loader1" class="item-3" ></div>
+                    </div>
+                    <div id="feedback1">
+                        <div class='flex-container-1'>
+                            <div><small>You stare blankly into space.</small></div>
+                        </div>
+                    </div>
                 </div>
-                <div id="feedback">
-                    <div class='flex-container-1'>
-                        <div class='item-3'><small>You stare blankly into space.</small></div>
+            </div>
+
+            <div style="width: 48%;">
+                <h6 id="show-title-header">GIT log</h6>
+                <div class='border rounded extra-color last'>
+                    <div class='flex-container-1 justify-content-center'>
+                        <div id="loader2" class="item-3" ></div>
+                    </div>
+                    <div id="feedback2">
+                        <div class='flex-container-1'>
+                            <div><small>You stare blankly into space.</small></div>
+                        </div>
                     </div>
                 </div>
             </div>

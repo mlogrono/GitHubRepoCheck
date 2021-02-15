@@ -8,8 +8,8 @@ $(document).ready(function () {
     function retrieveContributors (params) {
 
         console.log("Fire contributors REST request with repo:"+params.repo+" by owner:"+params.owner);
-        $("#loader").addClass("loader");
-        $("#feedback").html(initialContributorsText());
+        $("#loader1").addClass("loader");
+        $("#feedback1").html(initialContributorsText());
 
         $.ajax({
             type: "GET",
@@ -71,29 +71,81 @@ $(document).ready(function () {
     function printContributorsHtml(displayItems, itemCount) {
         // console.log("---------------");
         let str = "";
+        $('#show-commits-header').html("Past "+itemCount+" commits");
         for (let i = 0; i < displayItems.length; i++) {
-            str += "<div class='flex-container-4 user-select' style='align-items:center; flex-direction: row-reverse;'>";
-            str += "<img style='vertical-align: middle; margin-left: 10px;' src='"+displayItems[i]["avatar_url"]+"' width='50px' height='50px' alt='missing'/>";
-            str += "<small>"+displayItems[i]["login"]+"</small>";
-            // str += "<div class='bar' data-percent='"+(displayItems[i].count/itemCount)*100+"%'><span class='label'>"+displayItems[i].count+"</span></div>";
-
+            let holder = "";
+            if (displayItems[i].count > 0) {
+                holder = "user-select";
+            }
+            str += "<div class='"+holder+"' style='padding-left: 3%; padding-right: 3%;'>";
+                str += "<div class='flex-container-2 ' style='display: flex; align-items:center; overflow: hidden;'>";
+                    str += "<div style='margin-right: 10px;'>";
+                        str += "<img style='vertical-align: middle;' src='"+displayItems[i]["avatar_url"]+"' ";
+                        if (displayItems[i].count > 0) {
+                            str += "width='60px' height='60px'";
+                        }
+                        else {
+                            str += "width='20px' height='20px'";
+                        }
+                        str += " alt='missing'/>";
+                    str += "</div>";
+                    str += "<div style='flex-direction: column; align-content: stretch; flex-grow: 1;'>";
+                        if (displayItems[i].count > 0) {
+                            holder = "strong";
+                        }
+                        else {
+                            holder = "small";
+                        }
+                       str += "<div><"+holder+" style='flex-grow: 1;'>" + displayItems[i].login + "</"+holder+"></div>";
+                        if (displayItems[i].count > 0) {
+                            str += "<div><small style='flex-grow: 1; align-content: stretch; font-weight: lighter;'>" + displayItems[i].count + " of " + itemCount + " commits</small></div>";
+                        }
+                    str += "</div>";
+                str += "</div>";
+                if (displayItems[i].count > 0) {
+                    str += "<div style='flex-grow: 1;'>";
+                    str += "<div class='bar' style='flex-wrap: wrap; height: 20px; overflow: hidden; display: flex; align-items: center;' data-percent='" + (displayItems[i].count / itemCount) * 100 + "%'></div>";
+                    str += "</div>";
+                }
             str += "</div>";
-            str += "<div class='bar' style='height: 20px;' data-percent='"+(displayItems[i].count/itemCount)*100+"%'></div>";
-
-            // str += "<div class='bar' data-percent='90%'><span class='label'>820</span></div>";
-            // str += "<div class='bar' data-percent='85%'><span class='label'>"+displayItems[i].count+"</span></div>";
 
             if (i+1 < displayItems.length) {
                 str += "<hr>";
             }
         }
-// let i = 0;
-//         str += "<div class='bar' data-percent='40%'></div>";
-        // str += "<div class='bar' data-percent='"+(displayItems[i].count/itemCount)*100+"%'><span class='label'>"+displayItems[i].count+"</span></div>";
-        // str += "<div class='bar' data-percent='"+(displayItems[i].count/itemCount)*100+"%'><span class='label'>"+displayItems[i].count+"</span></div>";
 
-        $("#loader").removeClass("loader")
-        $("#feedback").html(str);
+        // for (let i = 0; i < displayItems.length; i++) {
+        //     str += "<div class='flex-container-4 user-select' style='align-items:center;'>";
+        //         str += "<div class=' ' style='display: flex; align-items:center; width: 20%; flex-direction: row-reverse;'>";
+        //             str += "<img style='vertical-align: middle; margin-left: 10px;' src='"+displayItems[i]["avatar_url"]+"' width='50px' height='50px' alt='missing'/>";
+        //             str += "<small>"+displayItems[i]["login"]+"</small>";
+        //         str += "</div>";
+        //         str += "<div style='vertical-align: middle; flex-grow: 1; '>";
+        //             str += "<div class='bar' style='flex-wrap: wrap; height: 20px; overflow: hidden' data-percent='"+(displayItems[i].count/itemCount)*100+"%'></div>";
+        //         str += "</div>"
+        //     str += "</div>";
+        //     if (i+1 < displayItems.length) {
+        //         str += "<hr>";
+        //     }
+        // }
+
+        // for (let i = 0; i < displayItems.length; i++) {
+        //     str += "<div class='flex-container-4 user-select' style='align-items:center; flex-direction: row-reverse;'>";
+        //     str += "<div class='bar' style='height: 20px; overflow: hidden' data-percent='"+(displayItems[i].count/itemCount)*100+"%'></div>";
+        //         str += "<img style='vertical-align: middle; margin-left: 10px;' src='"+displayItems[i]["avatar_url"]+"' width='50px' height='50px' alt='missing'/>";
+        //         str += "<small>"+displayItems[i]["login"]+"</small>";
+        //         // str += "<div>"
+        //
+        //         // str += "</div>";
+        //     str += "</div>";
+        //
+        //     if (i+1 < displayItems.length) {
+        //         str += "<hr>";
+        //     }
+        // }
+
+        $("#loader1").removeClass("loader")
+        $("#feedback1").html(str);
         setBarAnimation();
 
         // console.log("---------------");

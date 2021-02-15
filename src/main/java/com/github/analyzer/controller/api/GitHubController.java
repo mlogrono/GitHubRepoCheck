@@ -64,16 +64,14 @@ public class GitHubController {
                                 })
                                 .map(Repositories::getItems);
                     }
-                    else if (response.statusCode().is4xxClientError()) {
-                        System.out.println("4XX Error: "+response.toString());
-                        log.error(response.statusCode().toString());
-                        return Flux.error(new Exception("Error 4XX: Client Error: " + response.toString()));
-                    }
-                    else if (response.statusCode().is5xxServerError()) {
-                        System.out.println("5XX Error: "+response.toString());
-                        log.error(response.statusCode().toString());
-                        return Flux.error(new Exception("Error 5XX: Server Error: "+response.toString()));
-                    }
+//                    else if (response.statusCode().is4xxClientError()) {
+//                        System.out.println("4XX Error: "+response.toString());
+//                        return Flux.error(new Exception("Error 4XX: Client Error: " + response.toString()));
+//                    }
+//                    else if (response.statusCode().is5xxServerError()) {
+//                        System.out.println("5XX Error: "+response.toString());
+//                        return Flux.error(new Exception("Error 5XX: Server Error: "+response.toString()));
+//                    }
                     else {
                         System.out.println("ERROR");
                         return Flux.error(new Exception("ERROR"));
@@ -138,7 +136,7 @@ public class GitHubController {
     }
 
     private WebClient.ResponseSpec setErrorHandlers(WebClient.ResponseSpec spec) {
-        return spec.onStatus(HttpStatus::is4xxClientError, clientResponse -> {
+        return spec/*.onStatus(HttpStatus::is4xxClientError, clientResponse -> {
             System.out.println("4XX Error");
             return Mono.error(new Exception("Error 4XX: Client Error: " + clientResponse.toString()));
         })
@@ -149,6 +147,6 @@ public class GitHubController {
         .onStatus(HttpStatus::isError, clientResponse -> {
             System.out.println("ERROR");
             return Mono.error(new Exception("ERROR ERROR ERROR"));
-        });
+        })*/;
     }
 }
